@@ -1,0 +1,26 @@
+{
+    "name": "wifistore",
+    "version": "0.0.1",
+    "private": "true",
+    "description": "ap inventory",
+    "keywords": ["ap", "wifi"],
+    "repository": "https://github.com/Minjung/wifistore.git",
+    "homepage": "https://github.com/Minjung/wifistore",
+    "author": "zetsubro",
+    "dependencies": {
+        "stylus": ">=0.32.1",
+        "socket.io": ">=0.9.16",
+        "sequelize-mysql": "*",
+        "express": ">=3.3.1",
+        "jade": ">=0.32.0",
+        "zeparser": ">=0.0.7"
+    },
+    "main": "app.js",
+    "engines": {
+        "node": ">= 0.8.9"
+    },
+    "scripts": {
+        "prepublish": "npm prune",
+        "test": "make lint && make test"
+    }
+}
