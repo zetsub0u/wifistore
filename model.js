@@ -3,7 +3,7 @@ var mysql = require('sequelize-mysql').mysql;
 
 var ip = process.env.IP || "localhost";
 
-var sequelize = new Sequelize('wifistore', 'wifistore', 'te3lpi0c', {
+var sequelize = new Sequelize('wifistore', 'wifistore', {
     host: ip,
     port: 3306
 });
