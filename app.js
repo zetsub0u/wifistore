@@ -4,6 +4,8 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var model = require(__dirname + "/model.js")
 
+
+
 var ip = process.env.IP || "0.0.0.0";
 var port = process.env.PORT || 8080;
 
@@ -18,6 +20,7 @@ app.configure(function() {
         layout: false,
         pretty: true
     });
+    app.use(require('stylus').middleware(__dirname + '/public'));
     app.use(express.favicon());
     app.use(express.static(__dirname + '/public'));
 });
@@ -32,14 +35,6 @@ app.get('/accesspoint', function(req, res) {
     var password = req.query.password;
     var lat = req.query.latitude;
     var lon = req.query.longitude;
-
-    console.log({
-        store_name: store_name,
-        ssid: ssid,
-        password: password,
-        latitude: lat,
-        longitude: lon
-    });
 
     var ap = model.AccessPoint.create({
         store_name: store_name,
@@ -60,7 +55,7 @@ app.get('/user', function(req, res) {
     }).success(function(user) {
         console.log(user.values);
     });
-    res.send('User Create');
+    res.send('User Created');
 });
 
 io.sockets.on('connection', function(socket) {

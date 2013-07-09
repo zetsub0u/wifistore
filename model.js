@@ -15,7 +15,7 @@ var AccessPoint = sequelize.define('AccessPoint', {
     ssid: Sequelize.TEXT,
     password: Sequelize.TEXT,
     latitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true,
         defaultValue: null,
         validate: {
@@ -24,7 +24,7 @@ var AccessPoint = sequelize.define('AccessPoint', {
         }
     },
     longitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true,
         defaultValue: null,
         validate: {

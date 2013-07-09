@@ -2,12 +2,13 @@ doctype 5
 html
     head
         title Blehrg
+        link(rel='stylesheet', href='main.css')
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js')
         script(src='js.js')
         script(src='/socket.io/socket.io.js')
         script(src='handlebars-1.0.0-rc.4.js')
         script(src='ember-1.0.0-rc.6.js')
+        script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ7reVq1LY1b2_Fi3KUutYpiREazd5LiI&sensor=false')
+        
     body
-        h1 Test from layout
-        #container
-            block content
+        block content
