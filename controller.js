@@ -12,43 +12,38 @@ app.get('/accesspoint', function(req, res) {
     var lat = req.query.lat;
     var lon = req.query.lon;
     var userName = req.query.user_name;
-    console.log(Number(lat));
-    console.log(Number(lon));
+
     var user;
-    model.User.find({ where: { name: userName }}).success(function(result) {
-        console.log(result);
-        if (result !== null) {
-            user = result;
-        } else {
-            res.send("invalid user");
-        }
+
+    model.User.find({
+        name: userName
+    }, function(err, dbUser) {
+        console.log(dbUser);
+        user = dbUser;
     });
 
-    model.AccessPoint.create({
-        store_name: storeName,
-        ssid: ssid,
-        location: 'somewhere',
-        password: password,
-        latitude: Number(lat),
-        longitude: Number(lon)
-    }).success(function(ap) {
-        console.log(ap.values);
-    });
     res.send('Done!');
 });
 
 app.get('/user', function(req, res) {
-    model.User.create({
-        name: 'testuser',
-        password: '12345'
-    }).success(function(user) {
-        console.log(user.values);
+
+    var user = new model.User({
+        name: 'testuser1',
+        password: 'pass1'
+    });
+    user.save(function(err, user) {
+        if (err) // TODO handle the error
+        console.log("user saved");
     });
     res.send('User Created');
 });
 
 app.get('/user2', function(req, res) {
-    model.User.find({ where: { name: 'testuser' }}).success(function(result) {
+    model.User.find({
+        where: {
+            name: 'testuser'
+        }
+    }).success(function(result) {
         console.log(result);
     });
     res.send('encontre');

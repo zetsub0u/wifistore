@@ -1,54 +1,62 @@
-var Sequelize = require("sequelize-mysql").sequelize;
-var mysql = require('sequelize-mysql').mysql;
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/wifistore');
 
-var ip = process.env.IP || "localhost";
-
-var sequelize = new Sequelize('wifistore', 'wifistore','test', {
-    host: ip,
-    port: 3306
-});
-
-var AccessPoint = sequelize.define('access_point', {
-    store_name: Sequelize.STRING,
-    location: Sequelize.STRING,
-    ssid: Sequelize.STRING,
-    password: Sequelize.STRING,
-    latitude: {
-        type: Sequelize.DECIMAL(10,8),
-        allowNull: true,
-        defaultValue: null,
-        validate: {
-            min: -90,
-            max: 90,
-        }
+// Access Point model definition
+var apSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    longitude: {
-        type: Sequelize.DECIMAL(10,8),
-        allowNull: true,
-        defaultValue: null,
-        validate: {
-            min: -180,
-            max: 180,
-        }
+    ssid: {
+        type: String,
+        required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
+    geo: {
+        type: [Number],
+        index: '2d'
+    },
+    address: String,
+    updates: {
+        user_name: String,
+        when: Date,
+    }
 });
 
-var User = sequelize.define('user', {
-    name: Sequelize.STRING,
-    password: Sequelize.STRING
+apSchema.methods.findSameUser = function(cb) {
+    return this.model('AccessPoint').find({
+        user_name: this.user_name
+    }, cb);
+};
 
+apSchema.methods.findNear = function(cb) {
+    return this.model('AccessPoint').find({
+        geo: {
+            $nearSphere: this.geo,
+            $maxDistance: 0.01
+        }
+    }, cb);
+};
+
+var AccessPoint = mongoose.model('AccessPoint', apSchema);
+
+// User model definition
+var userSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true
+    }
 });
 
-var APUpdate = sequelize.define('ap_update', {
-   when: Sequelize.DATE 
-});
+var User = mongoose.model('User', userSchema);
 
-AccessPoint.hasOne(APUpdate);
-User.hasOne(APUpdate);
-
-//sequelize.drop();
-sequelize.sync();
-
-exports.AccessPoint = AccessPoint;
-exports.User = User;
-exports.APUpdate = APUpdate;
+// Module exports
+module.exports.AccessPoint = AccessPoint;
+module.exports.User = User;
