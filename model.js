@@ -3,53 +3,52 @@ var mysql = require('sequelize-mysql').mysql;
 
 var ip = process.env.IP || "localhost";
 
-var sequelize = new Sequelize('wifistore', 'wifistore','', {
+var sequelize = new Sequelize('wifistore', 'wifistore','test', {
     host: ip,
     port: 3306
 });
 
-var AccessPoint = sequelize.define('AccessPoint', {
+var AccessPoint = sequelize.define('access_point', {
     store_name: Sequelize.STRING,
-    description: Sequelize.TEXT,
-    location: Sequelize.TEXT,
-    ssid: Sequelize.TEXT,
-    password: Sequelize.TEXT,
+    location: Sequelize.STRING,
+    ssid: Sequelize.STRING,
+    password: Sequelize.STRING,
     latitude: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10,8),
         allowNull: true,
         defaultValue: null,
         validate: {
             min: -90,
-            max: 90
+            max: 90,
         }
     },
     longitude: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10,8),
         allowNull: true,
         defaultValue: null,
         validate: {
             min: -180,
-            max: 180
+            max: 180,
         }
     },
-}, {
-    validate: {
-        bothCoordsOrNone: function() {
-            if ((this.latitude === null) === (this.longitude === null)) {
-                throw new Error('Require either both latitude and longitude or neither');
-            }
-        }
-    }
 });
 
-var User = sequelize.define('User', {
-    name: Sequelize.TEXT,
-    password: Sequelize.TEXT
+var User = sequelize.define('user', {
+    name: Sequelize.STRING,
+    password: Sequelize.STRING
 
 });
 
-AccessPoint.hasOne(User);
+var APUpdate = sequelize.define('ap_update', {
+   when: Sequelize.DATE 
+});
+
+AccessPoint.hasOne(APUpdate);
+User.hasOne(APUpdate);
+
+//sequelize.drop();
 sequelize.sync();
 
 exports.AccessPoint = AccessPoint;
 exports.User = User;
+exports.APUpdate = APUpdate;
