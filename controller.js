@@ -6,7 +6,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/accesspoint', function(req, res) {
-    var storeName = req.query.store_name;
+    var storeName = req.query.name;
     var ssid = req.query.ssid;
     var password = req.query.password;
     var lat = req.query.lat;
@@ -18,10 +18,30 @@ app.get('/accesspoint', function(req, res) {
     model.User.find({
         name: userName
     }, function(err, dbUser) {
-        console.log(dbUser);
-        user = dbUser;
+        //console.log(dbUser);
+        if (user != []) {
+            user = dbUser;
+        } else {
+            res.send("not found");
+            return;
+        }
     });
-
+    
+    var ap = new model.AccessPoint({
+        name: storeName,
+        ssid: ssid,
+        password: password,
+        geo: [Number(lon),Number(lat)],
+        updates: [{
+            user_name: userName,
+            when: Date.now()
+        }]
+    });
+    ap.save(function(err, ap) {
+        if (err) { console.log('error: ' + err ) }
+        //console.log(ap);
+    });
+    
     res.send('Done!');
 });
 
@@ -32,19 +52,8 @@ app.get('/user', function(req, res) {
         password: 'pass1'
     });
     user.save(function(err, user) {
-        if (err) // TODO handle the error
+        if (err) { console.log('error: ' + err ) }
         console.log("user saved");
     });
     res.send('User Created');
 });
-
-app.get('/user2', function(req, res) {
-    model.User.find({
-        where: {
-            name: 'testuser'
-        }
-    }).success(function(result) {
-        console.log(result);
-    });
-    res.send('encontre');
-})

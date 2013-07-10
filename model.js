@@ -1,6 +1,15 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/wifistore');
 
+// Updates definition
+var updateSchema = mongoose.Schema({
+    user_name: String,
+    when: {
+        type: Date,
+        default: Date.now()
+    },
+});
+
 // Access Point model definition
 var apSchema = mongoose.Schema({
     name: {
@@ -20,10 +29,7 @@ var apSchema = mongoose.Schema({
         index: '2d'
     },
     address: String,
-    updates: {
-        user_name: String,
-        when: Date,
-    }
+    updates: [updateSchema]
 });
 
 apSchema.methods.findSameUser = function(cb) {
