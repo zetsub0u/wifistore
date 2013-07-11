@@ -21,6 +21,14 @@ $(function() {
             zoom: 15,
             panControl: false,
             zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.LEFT_CENTER
+            },
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.BOTTOM_CENTER
+            },
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
@@ -29,7 +37,7 @@ $(function() {
         var contentString = "You are here.";
 
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
+        var geocoder = new google.maps.Geocoder();
         var userPos;
 
         if (navigator.geolocation) {
@@ -77,6 +85,25 @@ $(function() {
             // Browser doesn't support Geolocation
             handleNoGeolocation(false);
         }
+
+        $("#geocode-submit").click(function(event) {
+            var geoloc = $('#geocode-location').val();
+            console.log(geoloc);
+            geocoder.geocode({
+                'address': geoloc
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                }
+                else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        });
 
         function clearMarkers() {
             for (var i = 0; i < markers.length; i++) {

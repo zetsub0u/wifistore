@@ -6,6 +6,30 @@ body {
   margin: 0;
   padding: 0;
 }
+#wrapper {
+  position: relative;
+}
 #map-canvas {
   height: 100%;
+}
+#menu {
+  position: absolute;
+  top: 0px;
+  height: 100px;
+  width: 100%;
+  background-color: #000;
+  background-image: none;
+  opacity: 0.8;
+  z-index: 99;
+}
+#geoloc,
+#geocode-location {
+  float: right;
+  margin-right: 2px;
+  margin-top: 5px;
+}
+#geocode-submit {
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
 }
