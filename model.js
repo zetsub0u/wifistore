@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/wifistore');
+var conf = require(__dirname + "/conf.js");
+mongoose.connect('mongodb://'+ conf.db.host +'/' + conf.db.db);
 
 // Updates definition
 var updateSchema = mongoose.Schema({

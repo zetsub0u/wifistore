@@ -13,9 +13,7 @@ app.get('/findNear', function(req, res) {
             $near: [Number(lon), Number(lat)],
             $maxDistance: 0.01
         }
-    },
-
-    function(error, aps) {
+    }, function(error, aps) {
         console.log(aps);
         res.send(aps);
     });
@@ -62,6 +60,16 @@ app.get('/accesspoint', function(req, res) {
     });
 
     res.send('Done!');
+});
+
+app.get('/login', function(req, res) {
+    req.session.username = 'test1';
+    req.session.email = 'test1@test1.com';
+    res.send('logged in');
+});
+
+app.get('/session', function(req, res) {
+    res.send(req.session);
 });
 
 app.get('/user', function(req, res) {

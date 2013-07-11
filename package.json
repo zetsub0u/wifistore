@@ -13,7 +13,8 @@
         "mongoose": "*",
         "express": ">=3.3.1",
         "jade": ">=0.32.0",
-        "zeparser": ">=0.0.7"
+        "zeparser": ">=0.0.7",
+        "connect-mongo": "*"
     },
     "main": "app.js",
     "engines": {
