@@ -1,0 +1,19 @@
+apiVersion: test/v1alpha1
+kind: Component
+metadata:
+  name: test-1
+  namespace: test-ns
+  owner: zetsub0u
+  lifecycle: experimental
+spec:
+  owner: zetsub0u
+---
+apiVersion: test/v1alpha1
+kind: Component
+metadata:
+  name: test-2
+  namespace: test-ns
+  owner: zetsub0u
+  lifecycle: stable
+spec:
+  owner: zetsub0u
